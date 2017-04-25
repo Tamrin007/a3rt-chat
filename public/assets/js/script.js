@@ -35,6 +35,28 @@
                 message_side: message_side
             });
             message.draw();
+            if (message_side === 'right') {
+                $.ajax({
+                    url: "https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "apikey": "LGWC2sCr65fohOQzDKKjoODKR2BEMSH9",
+                        "query": text
+                    },
+                    success: function(data) {
+                        bot_message = new Message({
+                            text: data.results[0].reply,
+                            message_side: 'left'
+                        });
+                        bot_message.draw();
+                                            $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
+                    },
+                    error: function() {
+                        alert("エラーが発生しました。リロードして下さい。");
+                    }
+                })
+            }
             return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
         };
         $('.send_message').click(function (e) {
